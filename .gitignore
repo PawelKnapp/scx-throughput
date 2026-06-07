@@ -1,10 +1,14 @@
-# Ignoruj pliki budowania Rusta
+# Ignoruj katalog budowania Rusta
 /target/
-**/*.rs.bk
 
-# Ignoruj skrypt pomocniczy
-run.sh
+# Ignoruj skompilowane pliki binarne C/eBPF
+*.o
+*.bpf.o
 
-# Ignoruj pliki tymczasowe
+# Ignoruj wygenerowane nagłówki jądra
+vmlinux.h
+
+# Ignoruj pliki tymczasowe i skrypty pomocnicze
 *.swp
 .DS_Store
+run.sh
