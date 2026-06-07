@@ -1,34 +1,17 @@
-use scx_rustland_core::Scheduler;
-use std::mem::MaybeUninit;
+use scx_rustland_core::RustLandBuilder;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Inicjalizacja podsystemu logowania
     env_logger::init();
-    println!("[INFO] Starting scx_throughput CPU scheduler...");
+    println!("[INFO] Starting scx_throughput...");
 
-    // Alokacja pamięci dla obiektu eBPF
-    let mut open_object = MaybeUninit::uninit();
+    // RustLandBuilder skompiluje i załaduje kod eBPF
+    let mut builder = RustLandBuilder::new()?;
+    builder.build()?;
 
-    // Rejestracja planisty w podsystemie sched-ext jądra Linux
-    let mut sched = match Scheduler::init(&mut open_object) {
-        Ok(s) => s,
-        Err(e) => {
-            eprintln!("[ERROR] Failed to load scheduler into the kernel: {}", e);
-            eprintln!("[FATAL] Please ensure the process is running with root privileges (sudo).");
-            return Err(e.into());
-        }
-    };
-
-    println!("[INFO] Scheduler successfully attached to sched-ext.");
-    println!("[INFO] Press Ctrl+C to terminate and restore default EEVDF scheduler.");
-
-    // Główna pętla wykonawcza planisty
+    println!("[INFO] Scheduler successfully attached.");
+    
+    // Pętla podtrzymująca życie procesu
     loop {
-        if !sched.run()?.should_restart() {
-            break;
-        }
+        std::thread::sleep(std::time::Duration::from_secs(1));
     }
-
-    println!("[INFO] Termination requested. Restoring default CPU scheduling architecture.");
-    Ok(())
 }

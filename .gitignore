@@ -1,1 +1,10 @@
-/target
+# Ignoruj pliki budowania Rusta
+/target/
+**/*.rs.bk
+
+# Ignoruj skrypt pomocniczy
+run.sh
+
+# Ignoruj pliki tymczasowe
+*.swp
+.DS_Store
