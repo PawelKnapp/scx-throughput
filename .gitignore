@@ -11,4 +11,3 @@ vmlinux.h
 # Ignoruj pliki tymczasowe i skrypty pomocnicze
 *.swp
 .DS_Store
-run.sh
